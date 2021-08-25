@@ -117,7 +117,32 @@ const options = {
 			prerender: {
 				type: 'branch',
 				children: {
-					crawl: expect_boolean(true),
+					crawl: {
+						type: 'leaf',
+						default: ['*'],
+						validate: (option, keypath) => {
+							if (
+								option !== false &&
+								(!Array.isArray(option) || !option.every((page) => typeof page === 'string'))
+							) {
+								throw new Error(`${keypath} must be either an array of strings or false`);
+							}
+
+							if (option === false) return option;
+
+							option.forEach(
+								/** @param {string} page */ (page) => {
+									if (page !== '*' && page[0] !== '/') {
+										throw new Error(
+											`Each member of ${keypath} must be either '*' or an absolute path beginning with '/' — saw '${page}'`
+										);
+									}
+								}
+							);
+
+							return option;
+						}
+					},
 					enabled: expect_boolean(true),
 					// TODO: remove this for the 1.0 release
 					force: {
@@ -148,7 +173,7 @@ const options = {
 					},
 					pages: {
 						type: 'leaf',
-						default: ['*'],
+						default: [],
 						validate: (option, keypath) => {
 							if (!Array.isArray(option) || !option.every((page) => typeof page === 'string')) {
 								throw new Error(`${keypath} must be an array of strings`);

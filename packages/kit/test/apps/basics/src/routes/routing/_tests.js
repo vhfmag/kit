@@ -2,6 +2,7 @@ import * as assert from 'uvu/assert';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { assertError } from '../../../../../../src/utils/assert';
 
 /** @type {import('test').TestMaker} */
 export default function (test, is_dev) {
@@ -129,6 +130,7 @@ export default function (test, is_dev) {
 				await app.prefetch('https://example.com');
 				throw new Error('Error was not thrown');
 			} catch (e) {
+				assertError(e);
 				assert.ok(
 					e.message.includes('Attempted to prefetch a URL that does not belong to this app')
 				);

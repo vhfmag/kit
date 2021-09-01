@@ -6,6 +6,7 @@ import { join, resolve } from 'path';
 import { get_server } from '../server/index.js';
 import { __fetch_polyfill } from '../../install-fetch.js';
 import { SVELTE_KIT, SVELTE_KIT_ASSETS } from '../constants.js';
+import { assertError } from '../../utils/assert.js';
 
 /** @param {string} dir */
 const mutable = (dir) =>
@@ -79,6 +80,7 @@ export async function preview({
 			try {
 				body = await getRawBody(req);
 			} catch (err) {
+				assertError(err);
 				res.statusCode = err.status || 400;
 				return res.end(err.reason || 'Invalid request body');
 			}

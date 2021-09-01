@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { assertError } from '../../utils/assert.js';
 import { hash } from '../hash.js';
 import { normalize } from '../load.js';
 import { coalesce_to_error } from '../utils.js';
@@ -636,6 +637,7 @@ export class Renderer {
 					node = previous;
 				}
 			} catch (e) {
+				assertError(e);
 				status = 500;
 				error = e;
 			}

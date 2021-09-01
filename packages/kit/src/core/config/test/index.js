@@ -3,6 +3,7 @@ import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import { fileURLToPath } from 'url';
 import { load_config } from '../index.js';
+import { assertError } from '../../../utils/assert.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
@@ -77,6 +78,7 @@ test('errors on loading config with incorrect default export', async () => {
 		const cwd = join(__dirname, 'fixtures', 'export-string');
 		await load_config({ cwd });
 	} catch (e) {
+		assertError(e);
 		errorMessage = e.message;
 	}
 

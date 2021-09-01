@@ -1,11 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import { assertError } from './assert';
 
 /** @param {string} dir */
 export function mkdirp(dir) {
 	try {
 		fs.mkdirSync(dir, { recursive: true });
 	} catch (e) {
+		assertError(e);
 		if (e.code === 'EEXIST') return;
 		throw e;
 	}

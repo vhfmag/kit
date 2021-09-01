@@ -9,6 +9,7 @@ import { preview } from '../src/core/preview/index.js';
 import { load_config } from '../src/core/config/index.js';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { format } from 'util';
+import { assertError } from '../src/utils/assert.js';
 
 /**
  * @param {{ port: number }} opts
@@ -276,6 +277,7 @@ async function main() {
 				context.watcher = await dev({ cwd, port, config, host: undefined, https: false });
 				Object.assign(context, await setup({ port }));
 			} catch (e) {
+				assertError(e);
 				console.log(e.stack);
 				throw e;
 			}

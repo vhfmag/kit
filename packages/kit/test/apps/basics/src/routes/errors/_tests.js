@@ -1,4 +1,5 @@
 import * as assert from 'uvu/assert';
+import { assertError } from '../../../../../../src/utils/assert';
 
 /** @type {import('test').TestMaker} */
 export default function (test, is_dev) {
@@ -10,6 +11,7 @@ export default function (test, is_dev) {
 					// ???
 					// await visit('/errors/clientside');
 				} catch (error) {
+					assertError(error);
 					assert.ok(/Crashing now/.test(error.message));
 				} finally {
 					// this is the Snowpack error overlay

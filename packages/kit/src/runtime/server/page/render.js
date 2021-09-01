@@ -1,5 +1,6 @@
 import devalue from 'devalue';
 import { writable } from 'svelte/store';
+import { assertError } from '../../../utils/assert.js';
 import { hash } from '../../hash.js';
 
 const s = JSON.stringify;
@@ -203,6 +204,7 @@ function try_serialize(data, fail) {
 	try {
 		return devalue(data);
 	} catch (err) {
+		assertError(err);
 		if (fail) fail(err);
 		return null;
 	}

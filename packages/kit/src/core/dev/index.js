@@ -17,6 +17,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { get_server } from '../server/index.js';
 import { __fetch_polyfill } from '../../install-fetch.js';
 import { SVELTE_KIT, SVELTE_KIT_ASSETS } from '../constants.js';
+import { assertError } from '../../utils/assert.js';
 
 /** @typedef {{ cwd?: string, port: number, host?: string, https: boolean, config: import('types/config').ValidatedConfig }} Options */
 /** @typedef {import('types/internal').SSRComponent} SSRComponent */
@@ -348,6 +349,7 @@ async function create_handler(vite, config, dir, cwd, get_manifest) {
 				try {
 					body = await getRawBody(req);
 				} catch (err) {
+					assertError(err);
 					res.statusCode = err.status || 400;
 					return res.end(err.reason || 'Invalid request body');
 				}
@@ -499,6 +501,7 @@ async function create_handler(vite, config, dir, cwd, get_manifest) {
 					not_found(res);
 				}
 			} catch (e) {
+				assertError(e);
 				vite.ssrFixStacktrace(e);
 				res.statusCode = 500;
 				res.end(e.stack);

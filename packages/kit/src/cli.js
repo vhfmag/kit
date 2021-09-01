@@ -4,6 +4,7 @@ import colors from 'kleur';
 import * as ports from 'port-authority';
 import { load_config } from './core/config/index.js';
 import { networkInterfaces, release } from 'os';
+import { assertError } from './utils/assert.js';
 
 async function get_config() {
 	// TODO this is temporary, for the benefit of early adopters
@@ -24,6 +25,7 @@ async function get_config() {
 	try {
 		return await load_config();
 	} catch (error) {
+		assertError(error);
 		let message = error.message;
 
 		if (
@@ -36,13 +38,17 @@ async function get_config() {
 		}
 
 		console.error(colors.bold().red(message));
-		console.error(colors.grey(error.stack));
+		if (error.stack) {
+			console.error(colors.grey(error.stack));
+		}
 		process.exit(1);
 	}
 }
 
-/** @param {Error} error */
+/** @param {unknown} error */
 function handle_error(error) {
+	assertError(error);
+
 	console.log(colors.bold().red(`> ${error.message}`));
 	if (error.stack) {
 		console.log(colors.gray(error.stack));

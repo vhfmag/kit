@@ -1,29 +1,20 @@
-import { AssertionError } from 'assert';
-
 /**
- *
  * @template {abstract new (...args: any[]) => any} Class
  * @param {unknown} value
  * @param {Class} clazz
- * @param {ConstructorParameters<typeof AssertionError>[0]} assertionErrorOptions
+ * @param {string} message
  * @returns {asserts value is InstanceType<Class>}
  */
-export function assertInstanceOf(value, clazz, assertionErrorOptions) {
+export function assertInstanceOf(value, clazz, message) {
 	if (!(value instanceof clazz)) {
-		throw new AssertionError(assertionErrorOptions);
+		throw new Error(`${message}\n\nExpected class:\t${clazz}\nActual value:\t${value}`);
 	}
 }
 
 /**
- *
- *
  * @param {unknown} error
  * @return {asserts error is Error & { [key: string]: any }}
  */
 export function assertError(error) {
-	assertInstanceOf(error, Error, {
-		message: 'Only Errors are expected to be thrown',
-		expected: 'Error',
-		actual: error
-	});
+	assertInstanceOf(error, Error, 'Only Errors are expected to be thrown');
 }

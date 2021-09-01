@@ -2,7 +2,7 @@ import * as assert from 'uvu/assert';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { assertError } from '../../../../../../src/utils/assert';
+import { assertError } from '../../../../../../src/utils/assert.js';
 
 /** @type {import('test').TestMaker} */
 export default function (test, is_dev) {

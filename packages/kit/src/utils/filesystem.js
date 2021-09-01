@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { assertError } from './assert';
+import { assertError } from './assert.js';
 
 /** @param {string} dir */
 export function mkdirp(dir) {
